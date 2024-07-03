@@ -192,15 +192,30 @@ const Bookstore = () => {
                   <Text>Author: {book.author}</Text>
                   <Text>Price: ${book.price}</Text>
                   <Text>Genre: {book.genre.name}</Text>
-                  <Button
-                    leftIcon={<Image src={AddToCartIcon} boxSize="20px" />}
-                    colorScheme="primary"
-                    variant="solid"
-                    onClick={() => handleAddToCart(book._id)}
-                    mt={2}
-                  >
-                    Add to Cart
-                  </Button>
+                  {!book.availability ? (
+                    <Button isDisabled colorScheme="red" variant="solid" mt={2}>
+                      Not Available for Purchase
+                    </Button>
+                  ) : book.stock === 0 ? (
+                    <Button
+                      isDisabled
+                      colorScheme="yellow"
+                      variant="solid"
+                      mt={2}
+                    >
+                      Out of Stock
+                    </Button>
+                  ) : (
+                    <Button
+                      leftIcon={<Image src={AddToCartIcon} boxSize="20px" />}
+                      colorScheme="primary"
+                      variant="solid"
+                      onClick={() => handleAddToCart(book._id)}
+                      mt={2}
+                    >
+                      Add to Cart
+                    </Button>
+                  )}
                 </Box>
               </Link>
             ))}

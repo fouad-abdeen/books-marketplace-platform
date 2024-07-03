@@ -81,6 +81,9 @@ const BooksManagement = () => {
     onOpen: onDetailsOpen,
     onClose: onDetailsClose,
   } = useDisclosure();
+  // Button Loaders
+  const [uploadingCover, setUploadingCover] = useState(false);
+  const [deletingCover, setDeletingCover] = useState(false);
 
   useEffect(() => {
     if (user && user.role !== "bookstore_owner") navigate("/");
@@ -305,6 +308,8 @@ const BooksManagement = () => {
     const formData = new FormData();
     formData.append("file", coverFile);
 
+    setUploadingCover(true);
+
     try {
       const response = await axios.post(
         baseApiUrl + `/books/${bookId}/cover`,
@@ -317,6 +322,7 @@ const BooksManagement = () => {
       const index = books.findIndex((book) => book._id === bookId);
       books[index] = { ...books[index], cover: response.data.data };
       setBooks([...books]);
+
       toast({
         title: "Cover uploaded.",
         description: "The cover has been uploaded successfully.",
@@ -333,10 +339,14 @@ const BooksManagement = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setUploadingCover(false);
     }
   };
 
-  const handleCoverDelete = async () => {
+  const handleCoverDeletion = async () => {
+    setDeletingCover(true);
+
     try {
       await axios.delete(baseApiUrl + `/books/${selectedBook}/cover`, {
         withCredentials: true,
@@ -361,6 +371,8 @@ const BooksManagement = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setDeletingCover(false);
     }
   };
 
@@ -535,14 +547,16 @@ const BooksManagement = () => {
                     htmlFor={`upload-cover-${book._id}`}
                     size="sm"
                     style={{ cursor: "pointer" }}
+                    loading={uploadingCover}
                   >
-                    Upload Cover
+                    {book.cover ? "Change Cover" : "Upload Cover"}
                   </Button>
                   {book.cover && (
                     <Button
                       size="sm"
                       colorScheme="red"
                       onClick={() => confirmCoverDeletion(book._id)}
+                      loading={deletingCover}
                     >
                       Delete Cover
                     </Button>
@@ -883,7 +897,7 @@ const BooksManagement = () => {
               >
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={handleCoverDelete} ml={3}>
+              <Button colorScheme="red" onClick={handleCoverDeletion} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

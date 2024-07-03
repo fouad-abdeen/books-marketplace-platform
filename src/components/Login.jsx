@@ -49,16 +49,28 @@ const Login = () => {
           },
           { withCredentials: true }
         );
+
         if (response.data.data.role === "bookstore_owner") {
           const response = await axios.get(baseApiUrl + `/bookstores`, {
             withCredentials: true,
           });
           setBookstore(response.data.data);
         }
+
         setUser(response.data.data);
         navigate("/");
       } catch (error) {
+        if (
+          error.response.data.error.message.startsWith(
+            "You don't have a registered bookstore."
+          )
+        ) {
+          navigate("/bookstore-registration");
+          return;
+        }
+
         setError(error.response.data.error.message);
+        setUser(null);
       }
     })();
   };

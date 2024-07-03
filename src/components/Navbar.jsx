@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Box, Flex, Button, Heading, Spacer, Image } from "@chakra-ui/react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
@@ -8,15 +8,13 @@ import { useContext } from "react";
 import CartIcon from "../assets/cart.png";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
 
   const logout = async () => {
-    try {
-      await axios.get(baseApiUrl + "/auth/logout", { withCredentials: true });
-      setUser(null);
-    } catch (error) {
-      //
-    }
+    await axios.get(baseApiUrl + "/auth/logout", { withCredentials: true });
+    setUser(null);
+    navigate("/");
   };
 
   return (
@@ -38,12 +36,14 @@ const Navbar = () => {
                 Books
               </Button>
             )}
-            <Button as={Link} to="/profile" variant="ghost" color="white">
-              Profile
-            </Button>
-            <Button as={Link} to="/settings" variant="ghost" color="white">
+            {user && user.role === "bookstore_owner" && (
+              <Button as={Link} to="/profile" variant="ghost" color="white">
+                Profile
+              </Button>
+            )}
+            {/* <Button as={Link} to="/settings" variant="ghost" color="white">
               Account Settings
-            </Button>
+            </Button> */}
             {user.role === "customer" && (
               <Button as={Link} to="/cart" variant="primary">
                 <Image src={CartIcon} alt="Add to Cart" w="20px" h="20px" />

@@ -14,6 +14,8 @@ import Bookstore from "./components/Bookstore";
 import Book from "./components/Book";
 import BooksManagement from "./components/BooksManagement";
 import { BookstoreContext } from "./contexts/BookstoreContext";
+import RegisterBookstore from "./components/RegisterBookstore";
+import Profile from "./components/Profile";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -52,9 +54,14 @@ function App() {
             <Route path="/email-verification" element={<VerifyEmail />} />
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="bookstore-registration"
+              element={<RegisterBookstore />}
+            />
             <Route path="/bookstores/:id" element={<Bookstore />} />
             <Route path="/books/:id" element={<Book />} />
             <Route path="/books-management" element={<BooksManagement />} />
+            <Route path="/profile" element={<Profile />} />
             {/* <Route path="*">"404 Not Found"</Route> */}
           </Routes>
         </Router>
