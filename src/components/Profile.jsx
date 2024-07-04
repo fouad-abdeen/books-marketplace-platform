@@ -36,7 +36,6 @@ const Profile = () => {
   });
 
   const [logo, setLogo] = useState(null);
-  const [logoVersion, setLogoVersion] = useState(Date.now());
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [deletingLogo, setDeletingLogo] = useState(false);
 
@@ -111,7 +110,6 @@ const Profile = () => {
         logo: response.data.data,
       }));
       setLogo(response.data.data);
-      setLogoVersion(Date.now());
       setUploadingLogo(false);
       toast({
         title: "Logo uploaded. Find it above.",

@@ -132,6 +132,7 @@ const Bookstore = () => {
               <Text>{bookstore.address}</Text>
               <Text>{bookstore.phone}</Text>
               {bookstore.email && <Text>{bookstore.email}</Text>}
+              <Text>Shipping Rate: ${bookstore.shippingRate}</Text>
             </Box>
           </HStack>
         </Box>
@@ -190,7 +191,9 @@ const Bookstore = () => {
                     {book.title}
                   </Heading>
                   <Text>Author: {book.author}</Text>
-                  <Text>Price: ${book.price}</Text>
+                  <Text>
+                    Price: <b>${book.price}</b>
+                  </Text>
                   <Text>Genre: {book.genre.name}</Text>
                   {!book.availability ? (
                     <Button isDisabled colorScheme="red" variant="solid" mt={2}>
